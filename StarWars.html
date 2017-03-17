@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <style type="text/css">
+        div {
+            border: solid black 1px;
+            display: inline-block;
+            padding: 10px;
+            margin: 10px;
+            font-size: 1.3em;
+        }
+
+        .selected {
+            color:blue;
+        }
+        body
+        {
+
+        }
+    
+    </style>
+</head>
+
+<body>
+
+    <div id="root"></div>
+    <div id="root2"></div>
+
+
+    <script type="text/javascript" src="../react/react.js"></script>
+    <script type="text/javascript" src="../react/JSXTransformer.js"></script>
+    <script type="text/javascript">
+    
+        var scoreOf = {};
+        var scoreIs = function(point) {
+            return function (letter) {
+                scoreOf[letter] = point;
+            };
+        };
+       var letters= [{
+  'author': 'Yoda',
+  'quote': 'When 900 years old, you reach… Look as good, you will not.',
+  'image': 'Image/Yoda.jpg'
+}, {
+  'author': 'Senator palpatine',
+  'quote': 'The Dark Side of the Force is the pathway to many abilities some consider to be.. Unnatural.',
+  'image': 'Image/palpatine.jpg'
+}, {
+  'author': 'Count Dooku',
+  'quote': 'I sense great fear in you, Skywalker. You have hate… you have anger… but you don’t use them.',
+  'image': 'Image/Count Dooku.png'
+}, {
+  'author': 'Darth vader',
+  'quote': 'Luke, you can destroy the Emperor. He has foreseen this. It is your destiny. Join me, and together we can rule the galaxy as father and son.',
+  'image': 'Image/Darth-Vader.jpg'
+}, {
+  'author': 'Princess leila',
+  'quote': 'Aren\'t you a little short for a storm trooper?',
+  'image': 'Image/Lea.jpg'
+}, {
+  'author': 'Yoda',
+  'quote': 'Mmm. Lost a planet, Master Obi-Wan has. How embarrassing.',
+  'image': 'Image/Yoda.jpg'
+}, {
+  'author': 'Qui-Gon Jinn',
+  'quote': 'Your focus determines your reality',
+  'image': 'Image/Qui-Gon-Jinn.png'
+}, {
+  'author': 'Yoda',
+  'quote': 'Do. Or do not. There is no try.',
+  'image': 'Image/Yoda.jpg'
+}, {
+  'author': 'Obi-Wan-Kenobi',
+  'quote': 'In my experience there is no such thing as luck.',
+  'image': 'Image/Obi-Wan.jpg'
+}, {
+  'author': 'Yoda',
+  'quote': 'If once you start down the dark side, forever will it dominate your destiney, consume you it will, as it did Obi-Wan\'s apprentice',
+  'image': 'Image/Yoda.jpg'
+}, {
+  'author': 'Darth Vader',
+  'quote': 'The Force is strong with this one.',
+  'image': 'Image/Darth-Vader.jpg'
+}];
+                    
+    </script>
+    
+    <script type="text/jsx">
+        var random;
+        var Qrandom;
+        var Tree =  React.createClass({
+            render : function () {
+                return (<div>
+                <Letters onLetterSelected={this.selectLetter}/> 
+                <Score letter={this.state.letter}/>
+                <div><Letters2 onLetterSelected={this.selectLetter}/>
+                <Score2 letter={this.state.letter}/></div>
+                <Random/> 
+                <QRandom/>
+                </div>);
+            },
+
+            getInitialState : function() {
+                return{
+                    letter : ''
+                }
+            },
+
+            selectLetter : function (newLetter) {
+                return this.setState({letter : newLetter});
+            }
+        });
+
+        var Letters = React.createClass({
+
+            render : function () {
+                var handler = this.props.onLetterSelected;
+
+                return (<div>
+                    {letters.map(function(item) {
+                        return <Letter itemValue={item} whenClick={handler} />;
+                    })}
+                </div>);
+            },
+
+        });
+          
+
+        var Letter = React.createClass({
+
+            render : function () {
+                var classname = this.state.selected ? 'selected' : '';
+                return (<div className={classname} onClick={this.handleClick}><img src={this.props.itemValue.image} width="150" height="120" /></div>);
+            },
+
+            getInitialState : function () {
+                return {selected : false };
+            },
+
+            handleClick : function () {
+                random=ChaineAleatoire(12);
+                Qrandom=QuoteAleatoire(1);
+                this.props.whenClick(this.props.itemValue);
+                this.setState({selected : true});
+                
+            }
+        });
+                  
+
+        var Score = React.createClass({
+
+            render : function () {
+                return (<div>
+                   <b> {this.props.letter.author} </b> : <cite> {this.props.letter.quote} </cite>
+                </div>);
+            },
+
+        });
+         function ChaineAleatoire(nbcar)
+        {
+            var ListeCar = new Array("a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","0","1","2","3","4","5","6","7","8","9");
+            var Chaine ='';
+            for(i = 0; i < nbcar; i++)
+            {
+                Chaine = Chaine + ListeCar[Math.floor(Math.random()*ListeCar.length)];
+            }
+            return Chaine;
+        }
+        function QuoteAleatoire(){
+            var ListQuote= new Array("When 900 years old, you reach… Look as good, you will not.", "The Dark Side of the Force is the pathway to many abilities some consider to be.. Unnatural", "I sense great fear in you, Skywalker. You have hate… you have anger… but you don’t use them.", "Luke, you can destroy the Emperor. He has foreseen this. It is your destiny. Join me, and together we can rule the galaxy as father and son", "Aren\'t you a little short for a storm trooper?", "Mmm. Lost a planet, Master Obi-Wan has. How embarrassing.", "Your focus determines your reality","Do. Or do not. There is no try.", "In my experience there is no such thing as luck.", "If once you start down the dark side, forever will it dominate your destiney, consume you it will, as it did Obi-Wan\'s apprentice", "The Force is strong with this one." );
+            var Chaine='';
+            Chaine= ListQuote[Math.floor(Math.random()*ListQuote.length)];
+            return Chaine;
+        }
+
+     
+        var Random =React.createClass({
+            render : function(){
+            return (<div>
+                Traduction in galactic language : <cite> {random} </cite>
+                </div>);
+                },
+        });
+
+         var QRandom =React.createClass({
+                render : function(){
+                return (<div>
+                   Who said : <cite> {Qrandom} </cite> ?
+                    </div>);
+                    },
+            });
+
+        var Letters2 = React.createClass({
+
+        render : function () {
+            var handler = this.props.onLetterSelected;
+
+            return (<div>
+                {letters.map(function(item) {
+                    return <Letter2 itemValue={item} whenClick={handler} />;
+                })}
+            </div>);
+        },
+
+    });
+
+    var Letter2 = React.createClass({
+
+        render : function () {
+            var classname = this.state.selected ? 'selected' : '';
+            return (<div className={classname} onClick={this.handleClick}>{this.props.itemValue.quote}</div>);
+        },
+
+        getInitialState : function () {
+            return {selected : false };
+        },
+
+        handleClick : function () {
+            random=stringGen(32);
+            //randomElement = letters[Math.floor(Math.random()*letters.length)];
+            this.props.whenClick(this.props.itemValue);
+            //this.setState({selected : true});
+        }
+    });
+
+    var Score2 = React.createClass({
+
+        render : function () {
+            return (<div>
+                {this.props.letter.quote} was said by : {this.props.letter.author}
+            </div>);
+        },
+
+    });
+
+        React.render(<Tree />, document.getElementById('root'));
+    
+    </script>
+
+  <script type="text/jsx">
+
+        var Replique = React.createClass({
+            
+            render : function() {
+            var output = this.replique(this.props.word);
+            return ( <div>
+                : {output}
+                </div>);
+            },
+            replique : function(word){
+
+            for( var i=0; letters.length; i++)
+            {
+                if(letters[i].author=word)
+                {
+                    return (letters[i].quote);
+                }
+                else{
+                return 'Name unknown'
+                }        
+            }    
+        }
+        });
+
+            var Tree2 =  React.createClass({
+                render : function () {
+                    return (<div>
+                        <input value={this.state.newWord} onChange={this.updateWord}/>
+                        <Replique word={this.state.newWord}/>
+                    </div>);
+                },
+
+                getInitialState : function() {
+                    return{
+                        newWord : ''
+                    }
+                },
+
+                updateWord : function (e) {
+                    this.setState({newWord :  e.target.value})
+                }
+            });
+
+
+            React.render(<Tree2 />, document.getElementById('root2'));
+
+  </script>
+
+</body>
+</html>
+
